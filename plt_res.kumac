@@ -1,0 +1,50 @@
+*macro plt_res ymax=0.050
+macro plt_res ymax=0.0001
+*opt logy
+opt liny
+*opt logx
+
+* No straggling
+ve/read w,th,p,rc,s,sr,elr,tail,inel vsig.dat
+np=$VLEN(w,1)
+
+null 1.10 2.50 0. [ymax]
+set plci 1;set dmod 1;graph [np] w s 'L'
+set plci 2;set dmod 1;graph [np] w sr 'L'
+set plci 3;set dmod 1;graph [np] w tail 'L'
+*set plci 3;set dmod 1;graph [np] w elr 'L'
+set plci 4;set dmod 1;graph [np] w inel 'L'
+/GRAPHICS/HPLOT/ATITLE 'W GeV' 'd[s]/d[W]dE?p! [m]b/GeV/str' ' ' '220'
+
+ytx=[ymax]*0.95
+set txci 1;itx 1.12 [ytx] norad
+ytx=[ymax]*0.90
+set txci 2;itx 1.12 [ytx] rad
+ytx=[ymax]*0.85
+set txci 3;itx 1.12 [ytx] el.tail
+ytx=[ymax]*0.80
+set txci 4;itx 1.12 [ytx] inel.
+set txci 1
+
+/PICTURE/PRINT 'rc_sigma.ps' '0' '0'
+
+wait 1000
+
+Option GRID
+*Set GRID 1003
+Set GRID 2003
+Option GRID
+Set GRID 3
+Set NDVX 10520.01
+null 1.10 2.50 0.75 1.05
+set mtyp 24
+set plci 1;set dmod 1;graph [np] w rc 'PL'
+
+/GRAPHICS/HPLOT/ATITLE 'W GeV' '[s]?rad!/[s]?norad!' ' ' '220'
+
+/PICTURE/PRINT 'rc_val.ps' '0' '0'
+
+
+
+
+return
